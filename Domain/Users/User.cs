@@ -1,27 +1,21 @@
 using System;
+using WorkDayLog.Core;
 using WorkDayLog.Domain.Users.ValueObjects;
 
 namespace WorkDayLog.Domain.Users
 {
-    public class User
+    public class User : EntityBase
     {
-        public static User New(string email, string password)
+        public static User New(string name, string email, string password)
             => new User
             {
                 Id = Guid.NewGuid(),
-                Email = new Email(email),
-                Password = new Password(email)
-            };
-
-        public static User Load(Guid id, string email, string password)
-            => new User
-            {
-                Id = id,
+                Name = name.Trim(),
                 Email = new Email(email),
                 Password = new Password(password)
             };
 
-        public Guid Id { get; private set; }
+        public string Name { get; private set; }
 
         public Email Email { get; private set; }
 

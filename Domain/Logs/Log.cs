@@ -6,15 +6,22 @@ namespace WorkDayLog.Domain.Logs
     public class Log
     {
         private List<Pause> _pauses;
+        private List<Activity> _activities;
 
-        public static Log New(DateTime startedAt)
+        public static Log New(Guid userId, DateTime startedAt)
             => new Log
             {
                 Id = Guid.NewGuid(),
-                StartedAt = startedAt
+                UserId = userId,
+                StartedAt = startedAt,
+
+                _pauses = new List<Pause>(),
+                _activities = new List<Activity>()
             };
 
         public Guid Id { get; private set; }
+
+        public Guid UserId { get; private set; }
 
         public DateTime StartedAt { get; private set; }
 
@@ -22,11 +29,12 @@ namespace WorkDayLog.Domain.Logs
 
         public IReadOnlyCollection<Pause> Pauses => _pauses;
 
-        public void AddPause(string description, DateTime startedAt, DateTime endedAt)
-        {
-            _pauses = _pauses ?? new List<Pause>();
+        public IReadOnlyCollection<Activity> Activities => _activities;
 
-            _pauses.Add(Pause.New(description, startedAt, endedAt));
-        }
+        public void AddPause(string description, DateTime startedAt, DateTime endedAt)
+            => _pauses.Add(Pause.New(description, startedAt, endedAt));
+
+        public void AddActivity(string description)
+            => _activities.Add(Activity.New(description));
     }
 }
