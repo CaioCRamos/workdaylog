@@ -20,5 +20,7 @@ namespace WorkDayLog.Domain.Logs
         public DateTime StartedAt { get; private set; }
 
         public DateTime EndedAt { get; private set; }
+
+        internal double MinutesSpent => (EndedAt - StartedAt).TotalMinutes;
     }
 }

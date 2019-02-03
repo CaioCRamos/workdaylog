@@ -1,6 +1,6 @@
 using System;
 
-namespace WorkDayLog.Domain.Users
+namespace WorkDayLog.Domain.Users.Services
 {
     public interface IUserService
     {

@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using WorkDayLog.Core.Configurations;
 using WorkDayLog.Domain.Users;
-using WorkDayLog.DTOs;
+using WorkDayLog.Domain.Users.Services;
+using WorkDayLog.Requests;
 
 namespace WorkDayLog.Controllers
 {
@@ -23,7 +24,7 @@ namespace WorkDayLog.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register([FromBody] RegisterUserDTO register)
+        public ActionResult Register([FromBody] RegisterUser register)
         {
             var user = Domain.Users.User.New(register.Name, register.Email, register.Password);
             var result = _userService.Save(user);
@@ -36,7 +37,7 @@ namespace WorkDayLog.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public ActionResult<object> Login([FromBody] LoginDTO login,
+        public ActionResult<object> Login([FromBody] Login login,
                                   [FromServices]SigningConfigurations signingConfigurations,
                                   [FromServices]TokenConfigurations tokenConfigurations)
         {
@@ -47,8 +48,8 @@ namespace WorkDayLog.Controllers
             ClaimsIdentity identity = new ClaimsIdentity(
                 new GenericIdentity(user.Name, "Login"),
                 new[] {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Name)
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email?.Address)
                 }
             );
 

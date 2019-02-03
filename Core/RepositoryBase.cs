@@ -12,7 +12,7 @@ namespace WorkDayLog.Core
         private readonly IMongoDatabase _db;
         private readonly string _collectionName;
 
-        protected RepositoryBase(IConfiguration config, string collectionName)
+        public RepositoryBase(IConfiguration config, string collectionName)
         {
             var connectionString = config.GetConnectionString("MongoDBConnection");
 

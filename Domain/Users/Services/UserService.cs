@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using WorkDayLog.Domain.Users.Repositories;
 
 namespace WorkDayLog.Domain.Users.Services
 {

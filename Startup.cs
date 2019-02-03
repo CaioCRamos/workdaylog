@@ -16,6 +16,9 @@ using WorkDayLog.Core.Configurations;
 using WorkDayLog.Domain.Users;
 using WorkDayLog.Domain.Users.Services;
 using WorkDayLog.Domain.Users.Repositories;
+using WorkDayLog.Domain.Logs.Services;
+using WorkDayLog.Domain.Logs.Repositories;
+using Newtonsoft.Json;
 
 namespace workdaylog
 {
@@ -31,13 +34,13 @@ namespace workdaylog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Services
+            //Users
             services.AddScoped<IUserService, UserService>();
-            //services.AddScoped<ILogService, LogService>();
+            services.AddScoped<IUserRepository, UserRepository>();            
 
-            //Repositories
-            services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<ILogRepository, LogRepository>();
+            //Logs
+            services.AddScoped<ILogService, LogService>();
+            services.AddScoped<ILogRepository, LogRepository>();
 
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
@@ -76,13 +79,20 @@ namespace workdaylog
             // a recursos deste projeto
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                auth
+                    .AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser()
                     .Build());
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(option => 
+                {
+                    option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace WorkDayLog.Domain.Users
+namespace WorkDayLog.Domain.Users.Repositories
 {
     public interface IUserRepository
     {

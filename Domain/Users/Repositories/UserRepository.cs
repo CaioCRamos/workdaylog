@@ -5,7 +5,7 @@ namespace WorkDayLog.Domain.Users.Repositories
 {
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        protected UserRepository(IConfiguration config) 
+        public UserRepository(IConfiguration config) 
             : base(config, "Users") {}
     }
 }
